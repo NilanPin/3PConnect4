@@ -1,0 +1,72 @@
+<html>
+<head>
+<title>StartMenu.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+.s3 { color: #6897bb;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+StartMenu.py</font>
+</center></td></tr></table>
+<pre><span class="s0">import </span><span class="s1">tkinter </span><span class="s0">as </span><span class="s1">tk</span>
+<span class="s0">from </span><span class="s1">tkinter </span><span class="s0">import </span><span class="s1">*</span>
+
+<span class="s0">def </span><span class="s1">button_event1():</span>
+    <span class="s0">import </span><span class="s1">ThreePlayers</span>
+    <span class="s1">print(ThreePlayers)</span>
+
+<span class="s0">def </span><span class="s1">button_event2():</span>
+    <span class="s0">import </span><span class="s1">TwoPlayersGame</span>
+    <span class="s1">print(TwoPlayersGame)</span>
+
+
+<span class="s0">def </span><span class="s1">button_event3():</span>
+    <span class="s1">print(</span><span class="s2">&quot;&quot;</span><span class="s1">)</span>
+
+<span class="s0">def </span><span class="s1">button_event4():</span>
+    <span class="s1">print(</span><span class="s2">&quot;&quot;</span><span class="s1">)</span>
+
+<span class="s0">def </span><span class="s1">button_event5():</span>
+    <span class="s1">quit()</span>
+
+<span class="s1">root = Tk()</span>
+<span class="s1">root.title(</span><span class="s2">'Connect 4 Game'</span><span class="s1">)</span>
+
+<span class="s1">canvas = tk.Canvas(root</span><span class="s0">, </span><span class="s1">height=</span><span class="s3">100</span><span class="s0">, </span><span class="s1">width=</span><span class="s3">100</span><span class="s1">)</span>
+<span class="s1">canvas.pack()</span>
+
+<span class="s1">frame = tk.Frame(root</span><span class="s0">, </span><span class="s1">bg=</span><span class="s2">&quot;blue&quot;</span><span class="s1">)</span>
+<span class="s1">frame.place(relx=</span><span class="s3">0</span><span class="s0">, </span><span class="s1">rely=</span><span class="s3">0</span><span class="s0">, </span><span class="s1">relwidth=</span><span class="s3">1</span><span class="s0">, </span><span class="s1">relheigh=</span><span class="s3">1</span><span class="s1">)</span>
+<span class="s1">frame = tk.Frame(root</span><span class="s0">, </span><span class="s1">bg=</span><span class="s2">&quot;red&quot;</span><span class="s1">)</span>
+<span class="s1">frame.place(relx=</span><span class="s3">0</span><span class="s0">, </span><span class="s1">rely=</span><span class="s3">0</span><span class="s0">, </span><span class="s1">relwidth=</span><span class="s3">0.5</span><span class="s0">, </span><span class="s1">relheigh=</span><span class="s3">1</span><span class="s1">)</span>
+
+<span class="s1">L = Label(root</span><span class="s0">, </span><span class="s1">text=</span><span class="s2">&quot;Welcome to 3P Connect 4!!!&quot;</span><span class="s0">,</span><span class="s1">font=(</span><span class="s2">&quot;Ariel&quot;</span><span class="s0">,</span><span class="s3">20</span><span class="s0">,</span><span class="s2">&quot;bold&quot;</span><span class="s0">, </span><span class="s2">&quot;underline&quot;</span><span class="s1">))</span>
+<span class="s1">L.pack()</span>
+
+<span class="s1">button = tk.Button(root</span><span class="s0">, </span><span class="s1">text=</span><span class="s2">&quot;3 Player Game&quot;</span><span class="s0">, </span><span class="s1">command=button_event1)</span>
+<span class="s1">button.pack()</span>
+
+<span class="s1">button = tk.Button(root</span><span class="s0">, </span><span class="s1">text=</span><span class="s2">&quot;2 Player Game&quot;</span><span class="s0">, </span><span class="s1">command=button_event2)</span>
+<span class="s1">button.pack()</span>
+
+<span class="s1">button = tk.Button(root</span><span class="s0">, </span><span class="s1">text=</span><span class="s2">&quot;1 Player Game&quot;</span><span class="s0">, </span><span class="s1">command=button_event3)</span>
+<span class="s1">button.pack()</span>
+
+<span class="s1">button = tk.Button(root</span><span class="s0">, </span><span class="s1">text=</span><span class="s2">&quot;Options&quot;</span><span class="s0">, </span><span class="s1">command=button_event4)</span>
+<span class="s1">button.pack()</span>
+
+<span class="s1">button = tk.Button(root</span><span class="s0">, </span><span class="s1">text=</span><span class="s2">&quot;QUIT&quot;</span><span class="s0">, </span><span class="s1">command=button_event5)</span>
+<span class="s1">button.pack()</span>
+
+<span class="s1">root.mainloop()</span>
+
+</pre>
+</body>
+</html>

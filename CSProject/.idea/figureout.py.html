@@ -1,0 +1,257 @@
+<html>
+<head>
+<title>figureout.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #808080;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #cc7832;}
+.s3 { color: #6897bb;}
+.s4 { color: #6a8759;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+figureout.py</font>
+</center></td></tr></table>
+<pre><span class="s0"># Libaries needed</span>
+<span class="s2">import </span><span class="s1">numpy </span><span class="s2">as </span><span class="s1">np</span>
+<span class="s2">import </span><span class="s1">pygame</span>
+<span class="s2">import </span><span class="s1">math</span>
+<span class="s2">import </span><span class="s1">sys</span>
+<span class="s2">import </span><span class="s1">random</span>
+<span class="s2">import </span><span class="s1">turtle</span>
+<span class="s0">#Declaring RGB values needed</span>
+<span class="s1">BLUE = (</span><span class="s3">0</span><span class="s2">, </span><span class="s3">100</span><span class="s2">, </span><span class="s3">255</span><span class="s1">)</span>
+<span class="s1">WHITE = (</span><span class="s3">255</span><span class="s2">, </span><span class="s3">255</span><span class="s2">, </span><span class="s3">255</span><span class="s1">)</span>
+<span class="s1">BLACK = (</span><span class="s3">0</span><span class="s2">,</span><span class="s3">0</span><span class="s2">,</span><span class="s3">0</span><span class="s1">)</span>
+<span class="s1">RED = (</span><span class="s3">255</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s1">)</span>
+<span class="s1">YELLOW = (</span><span class="s3">255</span><span class="s2">, </span><span class="s3">255</span><span class="s2">, </span><span class="s3">0</span><span class="s1">)</span>
+<span class="s1">GREEN = (</span><span class="s3">0</span><span class="s2">, </span><span class="s3">200</span><span class="s2">, </span><span class="s3">0</span><span class="s1">)</span>
+<span class="s1">Highlight = (</span><span class="s3">218</span><span class="s2">,</span><span class="s3">165</span><span class="s2">,</span><span class="s3">32</span><span class="s1">)</span>
+<span class="s0"># Row and Column variables</span>
+<span class="s1">ROWS = </span><span class="s3">8</span>
+<span class="s1">COLUMNS = </span><span class="s3">9</span>
+<span class="s0"># freespace variable for isfull()</span>
+<span class="s1">freespaces = </span><span class="s3">0</span>
+<span class="s0"># define our screen size</span>
+<span class="s1">Screensize = </span><span class="s3">95</span>
+<span class="s0"># sets game over to false so the game can be played. It will turn to true once someone has won or if the board is full</span>
+<span class="s1">game_over = </span><span class="s2">False</span>
+<span class="s0"># Randomly picks a player to start</span>
+<span class="s1">turn =random.randint(</span><span class="s3">0</span><span class="s2">,</span><span class="s3">2</span><span class="s1">)</span>
+<span class="s0"># define width and height of board</span>
+<span class="s1">width = COLUMNS * Screensize</span>
+<span class="s1">height = (ROWS + </span><span class="s3">1</span><span class="s1">) * Screensize</span>
+<span class="s1">size = (width</span><span class="s2">, </span><span class="s1">height)</span>
+<span class="s0"># intialises the size of the counter</span>
+<span class="s1">Counter_Size = int(Screensize / </span><span class="s3">2 </span><span class="s1">- </span><span class="s3">5</span><span class="s1">)</span>
+
+<span class="s0"># Intialises the board with zeros (empty posistions)</span>
+<span class="s2">def </span><span class="s1">intialise_board():</span>
+    <span class="s1">board = np.zeros((ROWS</span><span class="s2">, </span><span class="s1">COLUMNS))</span>
+    <span class="s2">return </span><span class="s1">board</span>
+
+<span class="s0"># Creates the Board and makes it look orginal looking</span>
+<span class="s2">def </span><span class="s1">createboard(board):</span>
+    <span class="s2">for </span><span class="s1">c </span><span class="s2">in </span><span class="s1">range(COLUMNS):</span>
+        <span class="s2">for </span><span class="s1">r </span><span class="s2">in </span><span class="s1">range(ROWS):</span>
+            <span class="s1">pygame.draw.rect(screen</span><span class="s2">, </span><span class="s1">BLUE</span><span class="s2">, </span><span class="s1">(c * Screensize</span><span class="s2">, </span><span class="s1">r * Screensize + Screensize</span><span class="s2">, </span><span class="s1">Screensize</span><span class="s2">,</span><span class="s1">Screensize ))</span>
+            <span class="s1">pygame.draw.circle(screen</span><span class="s2">, </span><span class="s1">BLACK</span><span class="s2">, </span><span class="s1">(</span>
+                <span class="s1">int(c * Screensize + Screensize / </span><span class="s3">2</span><span class="s1">)</span><span class="s2">, </span><span class="s1">int(r * Screensize + Screensize + Screensize / </span><span class="s3">2</span><span class="s1">))</span><span class="s2">, </span><span class="s1">Counter_Size)</span>
+    <span class="s0"># Creates the counters which then can be dropped</span>
+    <span class="s2">for </span><span class="s1">c </span><span class="s2">in </span><span class="s1">range(COLUMNS):</span>
+        <span class="s2">for </span><span class="s1">r </span><span class="s2">in </span><span class="s1">range(ROWS):</span>
+            <span class="s2">if </span><span class="s1">board[r][c] == </span><span class="s3">1</span><span class="s1">:</span>
+                <span class="s1">pygame.draw.circle(screen</span><span class="s2">, </span><span class="s1">RED</span><span class="s2">, </span><span class="s1">(</span>
+                    <span class="s1">int(c * Screensize + Screensize / </span><span class="s3">2</span><span class="s1">)</span><span class="s2">, </span><span class="s1">height - int(r * Screensize + Screensize / </span><span class="s3">2</span><span class="s1">))</span><span class="s2">, </span><span class="s1">Counter_Size)</span>
+            <span class="s2">elif </span><span class="s1">board[r][c] == </span><span class="s3">2</span><span class="s1">:</span>
+                <span class="s1">pygame.draw.circle(screen</span><span class="s2">, </span><span class="s1">YELLOW</span><span class="s2">, </span><span class="s1">(</span>
+                    <span class="s1">int(c * Screensize + Screensize / </span><span class="s3">2</span><span class="s1">)</span><span class="s2">, </span><span class="s1">height - int(r * Screensize + Screensize / </span><span class="s3">2</span><span class="s1">))</span><span class="s2">, </span><span class="s1">Counter_Size)</span>
+            <span class="s2">elif </span><span class="s1">board[r][c] == </span><span class="s3">3</span><span class="s1">:</span>
+                <span class="s1">pygame.draw.circle(screen</span><span class="s2">, </span><span class="s1">GREEN</span><span class="s2">, </span><span class="s1">(</span>
+                    <span class="s1">int(c * Screensize + Screensize / </span><span class="s3">2</span><span class="s1">)</span><span class="s2">, </span><span class="s1">height - int(r * Screensize + Screensize / </span><span class="s3">2</span><span class="s1">))</span><span class="s2">, </span><span class="s1">Counter_Size)</span>
+            <span class="s2">elif </span><span class="s1">board[r][c] == </span><span class="s3">4</span><span class="s1">:</span>
+                <span class="s1">pygame.draw.circle(screen</span><span class="s2">, </span><span class="s1">Highlight</span><span class="s2">, </span><span class="s1">(</span>
+                    <span class="s1">int(c * Screensize + Screensize / </span><span class="s3">2</span><span class="s1">)</span><span class="s2">, </span><span class="s1">height - int(r * Screensize + Screensize / </span><span class="s3">2</span><span class="s1">))</span><span class="s2">, </span><span class="s1">Counter_Size)</span>
+    <span class="s1">pygame.display.update()</span>
+
+<span class="s0"># Dropping the counter</span>
+<span class="s2">def </span><span class="s1">droppiece(board</span><span class="s2">, </span><span class="s1">row</span><span class="s2">, </span><span class="s1">col</span><span class="s2">, </span><span class="s1">piece):</span>
+    <span class="s1">board[row][col] = piece</span>
+
+<span class="s0"># Checks if the move is valid</span>
+<span class="s2">def </span><span class="s1">isvalid(board</span><span class="s2">, </span><span class="s1">col):</span>
+    <span class="s2">return </span><span class="s1">board[ROWS - </span><span class="s3">1</span><span class="s1">][col] == </span><span class="s3">0</span>
+
+<span class="s0"># gets the next row after a counter has been dropped</span>
+<span class="s2">def </span><span class="s1">nextrow(board</span><span class="s2">, </span><span class="s1">col):</span>
+    <span class="s2">for </span><span class="s1">r </span><span class="s2">in </span><span class="s1">range(ROWS):</span>
+        <span class="s2">if </span><span class="s1">board[r][col] == </span><span class="s3">0</span><span class="s1">:</span>
+            <span class="s2">return </span><span class="s1">r</span>
+<span class="s0"># Checks if the top row is full</span>
+<span class="s2">def </span><span class="s1">isfull(board</span><span class="s2">, </span><span class="s1">freespace):</span>
+    <span class="s2">for </span><span class="s1">x </span><span class="s2">in </span><span class="s1">range(</span><span class="s3">0</span><span class="s2">,</span><span class="s1">(COLUMNS)):</span>
+        <span class="s2">if </span><span class="s1">board[ROWS - </span><span class="s3">1</span><span class="s1">][x] == </span><span class="s3">0</span><span class="s1">:</span>
+            <span class="s1">freespace = freespace + </span><span class="s3">1</span>
+    <span class="s2">if </span><span class="s1">freespace == </span><span class="s3">0</span><span class="s1">:</span>
+        <span class="s2">return True</span>
+<span class="s0"># outptuts the board</span>
+<span class="s2">def </span><span class="s1">printboard(board):</span>
+    <span class="s1">print(np.flip(board</span><span class="s2">, </span><span class="s3">0</span><span class="s1">))</span>
+
+<span class="s0"># checks for any wins</span>
+<span class="s2">def </span><span class="s1">winningpos(board</span><span class="s2">, </span><span class="s1">piece):</span>
+    <span class="s0"># Check horizontal locations for win</span>
+    <span class="s2">for </span><span class="s1">c </span><span class="s2">in </span><span class="s1">range(COLUMNS - </span><span class="s3">3</span><span class="s1">):</span>
+        <span class="s2">for </span><span class="s1">r </span><span class="s2">in </span><span class="s1">range(ROWS):</span>
+            <span class="s2">if </span><span class="s1">board[r][c] == piece </span><span class="s2">and </span><span class="s1">board[r][c + </span><span class="s3">1</span><span class="s1">] == piece </span><span class="s2">and </span><span class="s1">board[r][c + </span><span class="s3">2</span><span class="s1">] == piece </span><span class="s2">and </span><span class="s1">board[r][</span>
+                <span class="s1">c + </span><span class="s3">3</span><span class="s1">] == piece:</span>
+                <span class="s1">piece = </span><span class="s3">4</span>
+                <span class="s1">board[r][c] = piece</span>
+                <span class="s1">board[r][c+</span><span class="s3">1</span><span class="s1">] = piece</span>
+                <span class="s1">board[r][c+</span><span class="s3">2</span><span class="s1">] = piece</span>
+                <span class="s1">board[r][c+</span><span class="s3">3</span><span class="s1">] = piece</span>
+                <span class="s2">return True</span>
+
+    <span class="s0"># Check vertical locations for win</span>
+    <span class="s2">for </span><span class="s1">c </span><span class="s2">in </span><span class="s1">range(COLUMNS):</span>
+        <span class="s2">for </span><span class="s1">r </span><span class="s2">in </span><span class="s1">range(ROWS - </span><span class="s3">3</span><span class="s1">):</span>
+            <span class="s2">if </span><span class="s1">board[r][c] == piece </span><span class="s2">and </span><span class="s1">board[r + </span><span class="s3">1</span><span class="s1">][c] == piece </span><span class="s2">and </span><span class="s1">board[r + </span><span class="s3">2</span><span class="s1">][c] == piece </span><span class="s2">and </span><span class="s1">board[r + </span><span class="s3">3</span><span class="s1">][</span>
+                <span class="s1">c] == piece:</span>
+                <span class="s1">piece = </span><span class="s3">4</span>
+                <span class="s1">board[r][c] = piece</span>
+                <span class="s1">board[r + </span><span class="s3">1</span><span class="s1">][c] = piece</span>
+                <span class="s1">board[r + </span><span class="s3">2</span><span class="s1">][c] = piece</span>
+                <span class="s1">board[r + </span><span class="s3">3</span><span class="s1">][c] = piece</span>
+                <span class="s2">return True</span>
+
+    <span class="s0"># Check positively sloped diagonal</span>
+    <span class="s2">for </span><span class="s1">c </span><span class="s2">in </span><span class="s1">range(COLUMNS - </span><span class="s3">3</span><span class="s1">):</span>
+        <span class="s2">for </span><span class="s1">r </span><span class="s2">in </span><span class="s1">range(ROWS - </span><span class="s3">3</span><span class="s1">):</span>
+            <span class="s2">if </span><span class="s1">board[r][c] == piece </span><span class="s2">and </span><span class="s1">board[r + </span><span class="s3">1</span><span class="s1">][c + </span><span class="s3">1</span><span class="s1">] == piece </span><span class="s2">and </span><span class="s1">board[r + </span><span class="s3">2</span><span class="s1">][c + </span><span class="s3">2</span><span class="s1">] == piece </span><span class="s2">and </span><span class="s1">board[r + </span><span class="s3">3</span><span class="s1">][</span>
+                <span class="s1">c + </span><span class="s3">3</span><span class="s1">] == piece:</span>
+                <span class="s1">piece = </span><span class="s3">4</span>
+                <span class="s1">board[r][c] = piece</span>
+                <span class="s1">board[r + </span><span class="s3">1</span><span class="s1">][c + </span><span class="s3">1</span><span class="s1">] = piece</span>
+                <span class="s1">board[r + </span><span class="s3">2</span><span class="s1">][c + </span><span class="s3">2</span><span class="s1">] = piece</span>
+                <span class="s1">board[r + </span><span class="s3">3</span><span class="s1">][c + </span><span class="s3">3</span><span class="s1">] = piece</span>
+                <span class="s2">return True</span>
+
+    <span class="s0"># Check negatively sloped diaganol</span>
+    <span class="s2">for </span><span class="s1">c </span><span class="s2">in </span><span class="s1">range(COLUMNS - </span><span class="s3">3</span><span class="s1">):</span>
+        <span class="s2">for </span><span class="s1">r </span><span class="s2">in </span><span class="s1">range(</span><span class="s3">3</span><span class="s2">, </span><span class="s1">ROWS):</span>
+            <span class="s2">if </span><span class="s1">board[r][c] == piece </span><span class="s2">and </span><span class="s1">board[r - </span><span class="s3">1</span><span class="s1">][c + </span><span class="s3">1</span><span class="s1">] == piece </span><span class="s2">and </span><span class="s1">board[r - </span><span class="s3">2</span><span class="s1">][c + </span><span class="s3">2</span><span class="s1">] == piece </span><span class="s2">and </span><span class="s1">board[r - </span><span class="s3">3</span><span class="s1">][</span>
+                <span class="s1">c + </span><span class="s3">3</span><span class="s1">] == piece:</span>
+                <span class="s1">piece = </span><span class="s3">4</span>
+                <span class="s1">board[r][c] = piece</span>
+                <span class="s1">board[r - </span><span class="s3">1</span><span class="s1">][c + </span><span class="s3">1</span><span class="s1">] = piece</span>
+                <span class="s1">board[r - </span><span class="s3">2</span><span class="s1">][c + </span><span class="s3">2</span><span class="s1">] = piece</span>
+                <span class="s1">board[r - </span><span class="s3">3</span><span class="s1">][c + </span><span class="s3">3</span><span class="s1">] = piece</span>
+                <span class="s2">return True</span>
+
+
+<span class="s1">board = intialise_board()</span>
+<span class="s1">printboard(board)</span>
+<span class="s0"># initalize pygame</span>
+<span class="s1">pygame.init()</span>
+<span class="s1">screen = pygame.display.set_mode(size)</span>
+<span class="s0"># Calling function draw_board again</span>
+<span class="s1">createboard(board)</span>
+<span class="s1">pygame.display.update()</span>
+
+<span class="s1">myfont = pygame.font.SysFont(</span><span class="s4">&quot;monospace&quot;</span><span class="s2">, </span><span class="s3">80</span><span class="s1">)</span>
+<span class="s0"># Allows the game to be played until game_over is true</span>
+<span class="s2">while not </span><span class="s1">game_over:</span>
+
+    <span class="s2">for </span><span class="s1">event </span><span class="s2">in </span><span class="s1">pygame.event.get():</span>
+        <span class="s2">if </span><span class="s1">event.type == pygame.QUIT:</span>
+            <span class="s1">sys.exit()</span>
+        <span class="s0">#Allows the correct coloured counter to be dropped according to the turn order</span>
+        <span class="s2">if </span><span class="s1">event.type == pygame.MOUSEMOTION:</span>
+            <span class="s1">pygame.draw.rect(screen</span><span class="s2">, </span><span class="s1">WHITE</span><span class="s2">, </span><span class="s1">(</span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s1">width</span><span class="s2">, </span><span class="s1">Screensize))</span>
+            <span class="s1">posx = event.pos[</span><span class="s3">0</span><span class="s1">]</span>
+            <span class="s2">if </span><span class="s1">turn == </span><span class="s3">0</span><span class="s1">:</span>
+                <span class="s1">pygame.draw.circle(screen</span><span class="s2">, </span><span class="s1">RED</span><span class="s2">, </span><span class="s1">(posx</span><span class="s2">, </span><span class="s1">int( Screensize/ </span><span class="s3">2</span><span class="s1">))</span><span class="s2">, </span><span class="s1">Counter_Size)</span>
+            <span class="s2">elif </span><span class="s1">turn == </span><span class="s3">1</span><span class="s1">:</span>
+                <span class="s1">pygame.draw.circle(screen</span><span class="s2">, </span><span class="s1">YELLOW</span><span class="s2">, </span><span class="s1">(posx</span><span class="s2">, </span><span class="s1">int(Screensize / </span><span class="s3">2</span><span class="s1">))</span><span class="s2">, </span><span class="s1">Counter_Size)</span>
+            <span class="s2">elif </span><span class="s1">turn == </span><span class="s3">2</span><span class="s1">:</span>
+                <span class="s1">pygame.draw.circle(screen</span><span class="s2">, </span><span class="s1">GREEN</span><span class="s2">, </span><span class="s1">(posx</span><span class="s2">, </span><span class="s1">int(Screensize / </span><span class="s3">2</span><span class="s1">))</span><span class="s2">, </span><span class="s1">Counter_Size)</span>
+            <span class="s1">pygame.display.update()</span>
+
+        <span class="s2">if </span><span class="s1">event.type == pygame.MOUSEBUTTONDOWN:</span>
+            <span class="s1">pygame.draw.rect(screen</span><span class="s2">, </span><span class="s1">WHITE</span><span class="s2">, </span><span class="s1">(</span><span class="s3">0</span><span class="s2">, </span><span class="s3">0</span><span class="s2">, </span><span class="s1">width</span><span class="s2">, </span><span class="s1">Screensize))</span>
+
+            <span class="s0"># Ask for Player 1 Input</span>
+            <span class="s2">if </span><span class="s1">turn == </span><span class="s3">0</span><span class="s1">:</span>
+                <span class="s1">posx = event.pos[</span><span class="s3">0</span><span class="s1">]</span>
+                <span class="s1">col = int(math.floor(posx / Screensize))</span>
+
+                <span class="s2">if </span><span class="s1">isvalid(board</span><span class="s2">, </span><span class="s1">col):</span>
+                    <span class="s1">row = nextrow(board</span><span class="s2">, </span><span class="s1">col)</span>
+                    <span class="s1">droppiece(board</span><span class="s2">, </span><span class="s1">row</span><span class="s2">, </span><span class="s1">col</span><span class="s2">, </span><span class="s3">1</span><span class="s1">)</span>
+
+
+                    <span class="s2">if </span><span class="s1">winningpos(board</span><span class="s2">, </span><span class="s3">1</span><span class="s1">):</span>
+                        <span class="s1">label = myfont.render(  </span><span class="s4">&quot;Player1 Wins!!!&quot;</span><span class="s2">, </span><span class="s3">1</span><span class="s2">, </span><span class="s1">RED)</span>
+                        <span class="s1">screen.blit(label</span><span class="s2">, </span><span class="s1">(</span><span class="s3">40</span><span class="s2">, </span><span class="s3">10</span><span class="s1">))</span>
+                        <span class="s1">game_over = </span><span class="s2">True</span>
+                    <span class="s2">else</span><span class="s1">:</span>
+                        <span class="s2">if </span><span class="s1">isfull(board</span><span class="s2">, </span><span class="s1">freespaces) == </span><span class="s2">True</span><span class="s1">:</span>
+                            <span class="s1">label = myfont.render(</span><span class="s4">&quot;   IT IS A DRAW   &quot;</span><span class="s2">, </span><span class="s3">1</span><span class="s2">, </span><span class="s1">BLUE)</span>
+                            <span class="s1">screen.blit(label</span><span class="s2">, </span><span class="s1">(</span><span class="s3">40</span><span class="s2">, </span><span class="s3">10</span><span class="s1">))</span>
+                            <span class="s1">game_over = </span><span class="s2">True</span>
+                        <span class="s2">else</span><span class="s1">:</span>
+                            <span class="s1">turn = </span><span class="s3">1</span>
+            <span class="s0"># Ask for Player 2 Input</span>
+            <span class="s2">elif </span><span class="s1">turn == </span><span class="s3">1</span><span class="s1">:</span>
+                <span class="s1">posx = event.pos[</span><span class="s3">0</span><span class="s1">]</span>
+                <span class="s1">col = int(math.floor(posx / Screensize))</span>
+
+                <span class="s2">if </span><span class="s1">isvalid(board</span><span class="s2">, </span><span class="s1">col):</span>
+                    <span class="s1">row = nextrow(board</span><span class="s2">, </span><span class="s1">col)</span>
+                    <span class="s1">droppiece(board</span><span class="s2">, </span><span class="s1">row</span><span class="s2">, </span><span class="s1">col</span><span class="s2">, </span><span class="s3">2</span><span class="s1">)</span>
+
+                    <span class="s2">if </span><span class="s1">winningpos(board</span><span class="s2">, </span><span class="s3">2</span><span class="s1">):</span>
+                        <span class="s1">label = myfont.render( </span><span class="s4">&quot;Player 2 Wins!!!&quot;</span><span class="s2">,</span><span class="s3">1</span><span class="s2">, </span><span class="s1">YELLOW)</span>
+                        <span class="s1">screen.blit(label</span><span class="s2">, </span><span class="s1">(</span><span class="s3">40</span><span class="s2">, </span><span class="s3">10</span><span class="s1">))</span>
+                        <span class="s1">game_over = </span><span class="s2">True</span>
+                    <span class="s2">else</span><span class="s1">:</span>
+                        <span class="s2">if </span><span class="s1">isfull(board</span><span class="s2">, </span><span class="s1">freespaces) == </span><span class="s2">True</span><span class="s1">:</span>
+                            <span class="s1">label = myfont.render(</span><span class="s4">&quot;   IT IS A DRAW   &quot;</span><span class="s2">, </span><span class="s3">1</span><span class="s2">, </span><span class="s1">BLUE)</span>
+                            <span class="s1">screen.blit(label</span><span class="s2">, </span><span class="s1">(</span><span class="s3">40</span><span class="s2">, </span><span class="s3">10</span><span class="s1">))</span>
+                            <span class="s1">game_over = </span><span class="s2">True</span>
+                        <span class="s2">else</span><span class="s1">:</span>
+                            <span class="s1">turn = </span><span class="s3">2</span>
+            <span class="s0"># Ask for player 3 output</span>
+            <span class="s2">elif </span><span class="s1">turn == </span><span class="s3">2</span><span class="s1">:</span>
+                <span class="s1">posx = event.pos[</span><span class="s3">0</span><span class="s1">]</span>
+                <span class="s1">col = int(math.floor(posx / Screensize))</span>
+
+                <span class="s2">if </span><span class="s1">isvalid(board</span><span class="s2">, </span><span class="s1">col):</span>
+                    <span class="s1">row = nextrow(board</span><span class="s2">, </span><span class="s1">col)</span>
+                    <span class="s1">droppiece(board</span><span class="s2">, </span><span class="s1">row</span><span class="s2">, </span><span class="s1">col</span><span class="s2">, </span><span class="s3">3</span><span class="s1">)</span>
+
+                    <span class="s2">if </span><span class="s1">winningpos(board</span><span class="s2">, </span><span class="s3">3</span><span class="s1">):</span>
+                        <span class="s1">label = myfont.render(</span><span class="s4">&quot;Player 3 Wins!!!&quot;</span><span class="s2">, </span><span class="s3">1</span><span class="s2">, </span><span class="s1">GREEN)</span>
+                        <span class="s1">screen.blit(label</span><span class="s2">, </span><span class="s1">(</span><span class="s3">40</span><span class="s2">, </span><span class="s3">10</span><span class="s1">))</span>
+                        <span class="s1">game_over = </span><span class="s2">True</span>
+                    <span class="s2">else</span><span class="s1">:</span>
+                        <span class="s2">if </span><span class="s1">isfull(board</span><span class="s2">, </span><span class="s1">freespaces) == </span><span class="s2">True</span><span class="s1">:</span>
+                            <span class="s1">label = myfont.render(</span><span class="s4">&quot;   IT IS A DRAW   &quot;</span><span class="s2">, </span><span class="s3">1</span><span class="s2">, </span><span class="s1">BLUE)</span>
+                            <span class="s1">screen.blit(label</span><span class="s2">, </span><span class="s1">(</span><span class="s3">40</span><span class="s2">, </span><span class="s3">10</span><span class="s1">))</span>
+                            <span class="s1">game_over = </span><span class="s2">True</span>
+                        <span class="s2">else</span><span class="s1">:</span>
+                            <span class="s1">turn = </span><span class="s3">0</span>
+
+
+            <span class="s1">printboard(board)</span>
+            <span class="s1">createboard(board)</span>
+
+            <span class="s2">if not </span><span class="s1">game_over:</span>
+                <span class="s2">continue</span>
+            <span class="s1">pygame.time.wait(</span><span class="s3">9000</span><span class="s1">)</span></pre>
+</body>
+</html>

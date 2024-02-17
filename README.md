@@ -1,0 +1,1 @@
+This is a 3-player connect 4 game it has a menu where you can select where to play Human vs Human vs human or Human vs Human vs AI or Human vs AI vs AI. There's also an options menu where you can change the volume
